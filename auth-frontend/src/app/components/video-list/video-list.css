@@ -1,0 +1,265 @@
+/* Styles for VideoListComponent */
+.main-content {
+  display: flex;
+  gap: 20px;
+}
+
+.folder-section {
+  flex: 0 0 280px; /* Fixed width for folder section, adjust as needed */
+  /* Styles for folder list, actions, etc. */
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 4px;
+  height: fit-content; /* So it doesn't stretch unnecessarily */
+}
+
+.folder-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #343a40;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.folder-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.folder-actions input[type="text"] {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.folder-actions button {
+  padding: 8px 10px; /* Slightly smaller padding for these buttons */
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.folder-actions button .material-icons {
+  font-size: 18px;
+}
+
+
+.folder-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.folder-list li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.folder-list li:hover {
+  background-color: #e9ecef;
+}
+
+.folder-list li.active {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 500;
+  border-radius: 4px;
+}
+.folder-list li.active .folder-item-actions button {
+  color: white; /* Ensure icons are visible on active background */
+}
+
+
+.folder-item-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px;
+  color: #6c757d; /* Muted color for icons */
+}
+.folder-item-actions button:hover {
+  color: var(--primary-color);
+}
+.folder-item-actions button .material-icons {
+  font-size: 16px;
+}
+
+.rename-folder-inline {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px; /* Or align next to item actions */
+  width: 100%; /* Take full width of the li if it wraps */
+}
+.rename-folder-inline input[type="text"] {
+  flex-grow: 1;
+  padding: 6px;
+  font-size: 0.9rem;
+}
+.rename-folder-inline button {
+  padding: 6px;
+}
+.rename-folder-inline button .material-icons {
+  font-size: 16px;
+}
+
+
+.video-section {
+  flex-grow: 1; /* Takes remaining space */
+}
+
+
+.video-list-container {
+  max-width: 1200px; /* Adjusted for two-column layout */
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.video-list-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #343a40;
+}
+
+/* .loading-indicator, .empty-state styles moved to global styles.css */
+
+.video-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.video-table th, .video-table td {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.video-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.thumbnail-placeholder {
+  width: 80px;
+  height: 45px; /* 16:9 aspect ratio */
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: #aaa;
+}
+
+.thumbnail-placeholder .material-icons {
+  font-size: 24px;
+}
+
+.video-thumbnail {
+  width: 80px;
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 4px;
+}
+
+.video-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  color: #007bff; /* Default icon color */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button .material-icons {
+  font-size: 20px; /* Adjust icon size */
+}
+
+.action-button.edit-button {
+  color: #ffc107; /* Yellow for edit */
+}
+.action-button.edit-button:hover {
+  color: #e0a800;
+}
+
+.action-button.delete-button {
+  color: #dc3545; /* Red for delete */
+}
+.action-button.delete-button:hover {
+  color: #c82333;
+}
+
+.action-button.play-button {
+  color: #28a745; /* Green for play */
+}
+.action-button.play-button:hover {
+  color: #218838;
+}
+
+
+/* Pagination */
+.pagination-controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pagination-button:hover {
+  background-color: #0056b3;
+}
+
+.pagination-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination-controls input[type="number"] {
+  width: 60px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+/* Messages are handled by global styles.css (api-error, success-message) */
+/* General button styling for non-action buttons is handled by global styles.css */
+
+.table-responsive-wrapper {
+  overflow-x: auto; /* Allows table to scroll horizontally on small screens */
+  margin-top: 20px; /* Keep consistent with previous table margin */
+}

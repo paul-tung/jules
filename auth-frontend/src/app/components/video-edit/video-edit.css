@@ -1,0 +1,132 @@
+/* Styles for VideoEditComponent */
+.video-edit-container {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.video-edit-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #343a40;
+}
+
+/* .loading-indicator, .empty-state styles moved to global styles.css */
+
+.video-player-section {
+  margin-bottom: 25px;
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.video-player-section h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #495057;
+}
+
+video {
+  max-width: 100%;
+  border-radius: 4px;
+  background-color: #000; /* Black background for video player */
+}
+
+.video-path-notice {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+/* Primary button (Save Changes) uses global styles */
+/* .secondary-button style moved to global styles.css */
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Messages are handled by global styles.css (api-error, success-message) */
+.error-message { /* For inline validation errors */
+  color: var(--danger-color);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.section-divider {
+  margin-top: 30px;
+  margin-bottom: 25px;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+.folder-assignment-section {
+  margin-top: 20px;
+}
+
+.folder-assignment-section h4 {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Ensure select dropdowns also use consistent styling */
+.form-group select {
+  /* Styles are already defined for select in .form-group */
+  /* Add any specific overrides if needed */
+  background-color: #fff; /* Ensure background is white */
+}
+
+/* Styling for messages specific to folder assignment if different from global */
+.folder-assignment-section .success-message,
+.folder-assignment-section .error-message.api-error {
+    margin-top: 10px; /* Spacing for folder-specific messages */
+}

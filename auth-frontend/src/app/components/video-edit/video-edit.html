@@ -1,0 +1,98 @@
+<div class="video-edit-container" *ngIf="video">
+  <h2>Edit Video: {{ currentVideoTitle }}</h2>
+
+  <div *ngIf="isLoading" class="loading-indicator">Loading video details...</div>
+  <div *ngIf="errorMessage && !isLoading" class="error-message api-error">{{ errorMessage }}</div>
+
+  <div *ngIf="!isLoading && video">
+    <!-- Video Player -->
+    <div class="video-player-section">
+      <h3>Video Preview</h3>
+      <video controls width="100%" [src]="videoPlayerUrl" #htmlPlayer>
+        Your browser does not support the video tag.
+      </video>
+      <p class="video-path-notice">
+        <strong>Storage Path:</strong> {{ video.storagePath }}<br>
+        <small>Note: Direct playback from local file system path may not work in a web browser due to security restrictions.
+          A dedicated backend endpoint is typically needed to stream or serve this video file.
+          The `src` attribute above is set to this path for demonstration; it might not play unless the backend serves files from this location and it's web-accessible.
+        </small>
+      </p>
+    </div>
+
+    <!-- Edit Form -->
+    <form (ngSubmit)="saveChanges()" #editVideoForm="ngForm" class="edit-form">
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" [(ngModel)]="editableVideo.title" required #titleInput="ngModel">
+        <div *ngIf="titleInput.invalid && titleInput.touched" class="error-message">
+          Title is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" [(ngModel)]="editableVideo.description" rows="4"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags (comma-separated):</label>
+        <input type="text" id="tags" name="tags" [(ngModel)]="tagsString">
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status" [(ngModel)]="editableVideo.status">
+          <option value="uploaded">Uploaded</option>
+          <option value="processing">Processing</option>
+          <option value="active">Active (Public)</option>
+          <option value="private">Private</option>
+          <option value="unlisted">Unlisted</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="editVideoForm.invalid || isSavingMetadata">
+          {{ isSavingMetadata ? 'Saving Metadata...' : 'Save Metadata Changes' }}
+        </button>
+        <button type="button" (click)="goBackToList()" class="secondary-button">Back to List</button>
+      </div>
+    </form>
+
+    <hr class="section-divider">
+
+    <!-- Folder Assignment Section -->
+    <div class="folder-assignment-section">
+      <h4>Assign to Folder</h4>
+      <div class="form-group">
+        <label for="folder">Folder:</label>
+        <select id="folder" name="folder" [(ngModel)]="selectedFolderId">
+          <option [ngValue]="null">Unassigned</option> <!-- Or [ngValue]="''" if backend expects empty string for unassign -->
+          <option *ngFor="let folder of availableFolders" [value]="folder.ID">
+            {{ folder.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="assignToFolder()" [disabled]="isAssigningFolder">
+          {{ isAssigningFolder ? 'Assigning...' : 'Update Folder Assignment' }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="updateErrorMessage" class="error-message api-error">
+      {{ updateErrorMessage }}
+    </div>
+     <div *ngIf="folderAssignmentMessage.text" [ngClass]="{'success-message': folderAssignmentMessage.type === 'success', 'error-message api-error': folderAssignmentMessage.type === 'error'}">
+      {{ folderAssignmentMessage.text }}
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!video && !isLoading && !errorMessage" class="empty-state">
+  Video not found. It may have been deleted or you do not have permission to view it.
+  <button (click)="goBackToList()" class="secondary-button">Back to List</button>
+</div>

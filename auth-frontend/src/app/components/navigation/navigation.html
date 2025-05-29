@@ -1,0 +1,18 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/">Auth App</a>
+  </div>
+  <ul class="navbar-links">
+    <ng-container *ngIf="isAuthenticated$ | async; else guestLinks">
+      <li><a routerLink="/dashboard">Dashboard</a></li>
+      <li><a routerLink="/videos">My Videos</a></li> <!-- Added link for My Videos -->
+      <li><a routerLink="/upload-video">Upload Video</a></li> 
+      <!-- <li><span>Welcome, {{ userEmail }}</span></li> Optional: display user info -->
+      <li><button (click)="logout()">Logout</button></li>
+    </ng-container>
+    <ng-template #guestLinks>
+      <li><a routerLink="/login">Login</a></li>
+      <li><a routerLink="/register">Register</a></li>
+    </ng-template>
+  </ul>
+</nav>

@@ -1,0 +1,47 @@
+<div class="video-upload-container">
+  <h2>Upload New Video</h2>
+  <form (ngSubmit)="onUpload()" #videoUploadForm="ngForm">
+    <div class="form-group">
+      <label for="videoFile">Video File:</label>
+      <input type="file" id="videoFile" (change)="onFileSelected($event)" accept="video/*" required #fileInput>
+      <div *ngIf="selectedFile" class="file-info">
+        Selected: {{ selectedFile.name }} ({{ selectedFile.size | number }} bytes)
+      </div>
+      <div *ngIf="fileInput.touched && !selectedFile" class="error-message">
+        A video file is required.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="title">Title (Optional):</label>
+      <input type="text" id="title" name="title" [(ngModel)]="videoTitle">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description (Optional):</label>
+      <textarea id="description" name="description" [(ngModel)]="videoDescription" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="tags">Tags (Optional, comma-separated):</label>
+      <input type="text" id="tags" name="tags" [(ngModel)]="videoTags">
+    </div>
+
+    <button type="submit" [disabled]="!selectedFile || uploadInProgress">
+      {{ uploadInProgress ? 'Uploading...' : 'Upload Video' }}
+    </button>
+  </form>
+
+  <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="progress-bar-container">
+    <div class="progress-bar" [style.width.%]="uploadProgress">
+      {{ uploadProgress }}%
+    </div>
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="error-message api-error">
+    {{ errorMessage }}
+  </div>
+</div>

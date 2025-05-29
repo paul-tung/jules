@@ -1,0 +1,160 @@
+<div class="video-list-container">
+  <div class="main-content">
+    <div class="folder-section">
+      <h3>Folders</h3>
+      <div class="folder-actions">
+        <input type="text" [(ngModel)]="newFolderName" placeholder="New folder name" (keyup.enter)="createFolder()">
+        <button (click)="createFolder()" [disabled]="!newFolderName.trim()" title="Create Folder">
+          <span class="material-icons">create_new_folder</span> Add
+        </button>
+      </div>
+      <ul class="folder-list">
+        <li (click)="filterByFolder(null)" [class.active]="selectedFolderId === null && !isFilteringUnassigned">All Videos</li>
+        <li (click)="filterByFolder('unassigned')" [class.active]="isFilteringUnassigned">Unassigned</li>
+        <li *ngFor="let folder of folders" [class.active]="selectedFolderId === folder.ID && !isFilteringUnassigned" class="folder-item">
+          <span (click)="filterByFolder(folder.ID)" class="folder-name">{{ folder.name }}</span>
+          <div class="folder-item-actions">
+            <button (click)="startRenameFolder(folder)" title="Rename folder"><span class="material-icons">edit</span></button>
+            <button (click)="confirmDeleteFolder(folder)" title="Delete folder"><span class="material-icons">delete</span></button>
+          </div>
+          <div *ngIf="renamingFolder && renamingFolder.ID === folder.ID" class="rename-folder-inline">
+            <input type="text" [(ngModel)]="renamingFolderName" (keyup.enter)="submitRenameFolder()" (keyup.escape)="cancelRenameFolder()">
+            <button (click)="submitRenameFolder()"><span class="material-icons">check</span></button>
+            <button (click)="cancelRenameFolder()"><span class="material-icons">close</span></button>
+          </div>
+        </li>
+      </ul>
+      <div *ngIf="folderError" class="error-message api-error">{{ folderError }}</div> <!-- Changed class -->
+    </div>
+
+    <div class="video-section">
+      <h2>{{ currentViewTitle }}</h2>
+      <div *ngIf="isLoading" class="loading-indicator">
+        Loading videos...
+      </div>
+
+      <div *ngIf="errorMessage && !isLoading" class="error-message api-error">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="!isLoading && !errorMessage && videos.length === 0" class="empty-state">
+        No videos found in this view.
+        <span *ngIf="!selectedFolderId && !isFilteringUnassigned">
+          <a routerLink="/upload-video">Upload your first video!</a>
+        </span>
+      </div>
+
+      <div *ngIf="!isLoading && videos.length > 0" class="table-responsive-wrapper">
+        <table class="video-table">
+          <thead>
+            <tr>
+              <th>Thumbnail</th>
+              <th>Title</th>
+              <th>Folder</th>
+              <th>Status</th>
+              <th>Uploaded At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let video of videos">
+              <td>
+                <div class="thumbnail-placeholder">
+                  <span class="material-icons">videocam</span>
+                </div>
+              </td>
+              <td>{{ video.title }}</td>
+              <td>{{ getFolderName(video.folderId) }}</td>
+              <td>{{ video.status }}</td>
+              <td>{{ video.uploadedAt | date:'short' }}</td>
+              <td class="video-actions">
+                <button (click)="editVideo(video.ID)" class="action-button edit-button" title="Edit">
+                  <span class="material-icons">edit</span>
+                </button>
+                <button (click)="confirmDelete(video.ID, video.title)" class="action-button delete-button" title="Delete">
+                  <span class="material-icons">delete</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pagination-controls" *ngIf="totalPages > 1">
+          <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1" class="pagination-button">
+            <span class="material-icons">navigate_before</span> Previous
+          </button>
+          <span>Page {{ currentPage }} of {{ totalPages }} ({{totalItems}} items)</span>
+          <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages" class="pagination-button">
+            Next <span class="material-icons">navigate_next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message api-error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && videos.length === 0" class="empty-state">
+    You haven't uploaded any videos yet. <a routerLink="/upload-video">Upload your first video!</a>
+  </div>
+
+  <div *ngIf="!isLoading && videos.length > 0">
+    <table class="video-table">
+      <thead>
+        <tr>
+          <th>Thumbnail</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Uploaded At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let video of videos">
+          <td>
+            <!-- Placeholder for thumbnail. If video.thumbnailPath exists, use it. -->
+            <div class="thumbnail-placeholder">
+              <span class="material-icons">videocam</span> <!-- Using Material Icons as placeholder -->
+            </div>
+            <!-- <img *ngIf="video.thumbnailPath" [src]="video.thumbnailPath" alt="{{ video.title }} thumbnail" class="video-thumbnail"> -->
+          </td>
+          <td>{{ video.title }}</td>
+          <td>{{ video.status }}</td>
+          <td>{{ video.uploadedAt | date:'short' }}</td>
+          <td class="video-actions">
+            <button (click)="editVideo(video.ID)" class="action-button edit-button" title="Edit">
+              <span class="material-icons">edit</span>
+            </button>
+            <button (click)="confirmDelete(video.ID, video.title)" class="action-button delete-button" title="Delete">
+              <span class="material-icons">delete</span>
+            </button>
+            <!-- Link to a future player component or use edit page for playing -->
+            <!-- <button (click)="playVideo(video.ID)" class="action-button play-button" title="Play">
+              <span class="material-icons">play_arrow</span>
+            </button> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls" *ngIf="totalPages > 1">
+      <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1" class="pagination-button">
+        <span class="material-icons">navigate_before</span> Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }} ({{totalItems}} items)</span>
+      <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages" class="pagination-button">
+        Next <span class="material-icons">navigate_next</span>
+      </button>
+      <!-- Optional: Input for specific page -->
+      <!-- 
+      <input type="number" min="1" [max]="totalPages" [(ngModel)]="pageInput" (keyup.enter)="goToPage(pageInput)" placeholder="Page #">
+      <button (click)="goToPage(pageInput)">Go</button>
+      -->
+    </div>
+  </div>
+</div>
